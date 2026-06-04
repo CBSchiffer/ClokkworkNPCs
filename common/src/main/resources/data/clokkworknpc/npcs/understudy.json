@@ -1,0 +1,18 @@
+{
+  "id": "clokkworknpc:understudy",
+  "display_name": "Understudy",
+  "model": {
+    "type": "clokkworknpc:player",
+    "skins": [
+      "clokkworknpc:textures/entity/understudy.png"
+    ]
+  },
+  "dialogue": "clokkworknpc:understudy_dialogue",
+  "factions": [
+    "clokkworknpc:forbidden_archivists"
+  ],
+  "tags": [
+    "scholar",
+    "merchant"
+  ]
+}

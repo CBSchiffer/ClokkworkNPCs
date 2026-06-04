@@ -1,0 +1,28 @@
+{
+  "id": "clokkworknpc:understudy_dialogue",
+  "start": "first_meeting",
+  "nodes": {
+    "first_meeting": {
+      "text": "Do not carry that book where lamps are lit.",
+      "options": [
+        {
+          "label": "Inquire",
+          "next": "ask_book"
+        },
+        {
+          "label": "Leave",
+          "action": "close"
+        }
+      ]
+    },
+    "ask_book": {
+      "text": "It is not illegal because it is false. It is illegal because it is useful.",
+      "options": [
+        {
+          "label": "Leave",
+          "action": "close"
+        }
+      ]
+    }
+  }
+}
