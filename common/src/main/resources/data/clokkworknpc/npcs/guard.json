@@ -1,0 +1,11 @@
+{
+  "id": "clokkworknpc:guard",
+  "display_name": "Gate Guard",
+  "no_ai": true,
+  "unique": true,
+  "attributes": {
+    "minecraft:generic.max_health": 40.0,
+    "minecraft:generic.movement_speed": 0.15,
+    "minecraft:generic.attack_damage": 6.0
+  }
+}

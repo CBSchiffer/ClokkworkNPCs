@@ -1,6 +1,7 @@
 package com.clokkwork.clokkworknpc.neoforge;
 
 import com.clokkwork.clokkworknpc.Constants;
+import com.clokkwork.clokkworknpc.command.ClokkworkNpcCommands;
 import com.clokkwork.clokkworknpc.command.FactionCommands;
 import com.clokkwork.clokkworknpc.data.load.ClokkworkNpcReloadListeners;
 import com.clokkwork.clokkworknpc.faction.FactionWorldSync;
@@ -26,6 +27,7 @@ public final class NeoForgeEventHandlers {
 	@SubscribeEvent
 	public static void onRegisterCommands(RegisterCommandsEvent event) {
 		FactionCommands.register(event.getDispatcher());
+		ClokkworkNpcCommands.register(event.getDispatcher());
 	}
 
 	@SubscribeEvent

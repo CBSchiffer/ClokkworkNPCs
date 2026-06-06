@@ -2,7 +2,7 @@
   "id": "clokkworknpc:understudy",
   "display_name": "Understudy",
   "model": {
-    "type": "clokkworknpc:player",
+    "type": "clokkworknpc:humanoid",
     "skins": [
       "clokkworknpc:textures/entity/understudy.png"
     ]

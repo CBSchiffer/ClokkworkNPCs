@@ -18,6 +18,7 @@ public class GenericHumanoidNpcRenderer extends HumanoidMobRenderer<GenericHuman
 
 	@Override
 	public ResourceLocation getTextureLocation(GenericHumanoidNpcEntity entity) {
-		return PLACEHOLDER_TEXTURE;
+		ResourceLocation skin = entity.getSkinTexture();
+		return skin != null ? skin : PLACEHOLDER_TEXTURE;
 	}
 }

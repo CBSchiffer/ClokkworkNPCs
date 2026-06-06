@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Mutable faction membership for a runtime NPC. Initialized from an NPC definition's
- * {@code factions} JSON field at spawn; may change during gameplay.
+ * Mutable faction membership for a runtime NPC instance. Initialized from an NPC definition's
+ * {@code factions} spawn field when the entity is created; may change during gameplay independently
+ * of the definition template.
  */
 public final class FactionMembership {
 

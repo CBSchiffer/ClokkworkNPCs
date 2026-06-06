@@ -1,6 +1,7 @@
 package com.clokkwork.clokkworknpc.fabric;
 
 import com.clokkwork.clokkworknpc.Constants;
+import com.clokkwork.clokkworknpc.command.ClokkworkNpcCommands;
 import com.clokkwork.clokkworknpc.command.FactionCommands;
 import com.clokkwork.clokkworknpc.data.load.ClokkworkNpcReloadListeners;
 import com.clokkwork.clokkworknpc.fabric.data.PreparableReloadListenerBridge;
@@ -18,7 +19,10 @@ public final class FabricModEvents {
 	}
 
 	public static void register() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> FactionCommands.register(dispatcher));
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			FactionCommands.register(dispatcher);
+			ClokkworkNpcCommands.register(dispatcher);
+		});
 
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(
 				new PreparableReloadListenerBridge(

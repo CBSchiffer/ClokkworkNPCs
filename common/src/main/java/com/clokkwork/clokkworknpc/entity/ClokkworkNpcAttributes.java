@@ -13,6 +13,10 @@ public final class ClokkworkNpcAttributes {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 20.0)
 				.add(Attributes.MOVEMENT_SPEED, 0.25)
-				.add(Attributes.FOLLOW_RANGE, 16.0);
+				.add(Attributes.FOLLOW_RANGE, 16.0)
+				.add(Attributes.ATTACK_DAMAGE, 1.0)
+				.add(Attributes.ARMOR, 0.0)
+				.add(Attributes.ARMOR_TOUGHNESS, 0.0)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
 	}
 }
