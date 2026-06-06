@@ -1,13 +1,15 @@
 package com.clokkwork.clokkworknpc.data;
 
 /**
- * Resource paths under {@code data/<namespace>/} scanned by JSON reload listeners.
+ * Path segments scanned by {@link com.clokkwork.clokkworknpc.data.load.JsonDefinitionReloadListener}
+ * under {@code data/<namespace>/}. Example: {@code factions} matches
+ * {@code data/clokkworknpc/factions/*.json}.
  */
 public final class DefinitionPaths {
 
-	public static final String NPCS = "clokkworknpc/npcs";
-	public static final String DIALOGUE = "clokkworknpc/dialogue";
-	public static final String FACTIONS = "clokkworknpc/factions";
+	public static final String NPCS = "npcs";
+	public static final String DIALOGUE = "dialogue";
+	public static final String FACTIONS = "factions";
 
 	private DefinitionPaths() {
 	}

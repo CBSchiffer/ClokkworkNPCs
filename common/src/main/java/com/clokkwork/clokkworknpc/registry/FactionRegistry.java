@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Unified faction registry for a world. Holds data-file factions and world-created factions
- * in one lookup table.
+ * Unified faction registry for a world. Data-file and world-created factions share one map
+ * and are treated identically for lookup. Only world-created IDs are tracked for save export.
  */
 public final class FactionRegistry {
 
@@ -44,9 +44,9 @@ public final class FactionRegistry {
 	}
 
 	/**
-	 * Refreshes data-file factions after a resource reload. World-created factions are preserved.
+	 * Merges data-file factions into the registry. World-created entries win on ID conflicts.
 	 */
-	public void applyDataFileFactions(Map<ResourceLocation, FactionDefinition> dataFileFactions) {
+	public void syncDataFileFactions(Map<ResourceLocation, FactionDefinition> dataFileFactions) {
 		factions.entrySet().removeIf(entry -> !worldCreatedIds.contains(entry.getKey()));
 		for (Map.Entry<ResourceLocation, FactionDefinition> entry : dataFileFactions.entrySet()) {
 			if (worldCreatedIds.contains(entry.getKey())) {
@@ -60,9 +60,12 @@ public final class FactionRegistry {
 		}
 	}
 
+	/**
+	 * Registers a world-created faction. Fails if any faction with the same ID already exists.
+	 */
 	public boolean register(FactionDefinition faction) {
 		ResourceLocation id = faction.id();
-		if (factions.containsKey(id)) {
+		if (contains(id)) {
 			return false;
 		}
 		factions.put(id, faction);

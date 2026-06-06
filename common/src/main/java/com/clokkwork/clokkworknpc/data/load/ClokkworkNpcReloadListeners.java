@@ -1,12 +1,12 @@
-package com.clokkwork.clokkworknpc.neoforge.data;
+package com.clokkwork.clokkworknpc.data.load;
 
 import com.clokkwork.clokkworknpc.data.DefinitionPaths;
 import com.clokkwork.clokkworknpc.data.dialogue.DialogueDefinition;
 import com.clokkwork.clokkworknpc.data.faction.FactionDataFiles;
 import com.clokkwork.clokkworknpc.data.faction.FactionDefinition;
-import com.clokkwork.clokkworknpc.data.load.JsonDefinitionReloadListener;
 import com.clokkwork.clokkworknpc.data.npc.NpcDefinition;
-import com.clokkwork.clokkworknpc.neoforge.faction.FactionWorldSync;
+import com.clokkwork.clokkworknpc.faction.FactionWorldSync;
+import com.clokkwork.clokkworknpc.platform.Services;
 import com.clokkwork.clokkworknpc.registry.ClokkworkNpcRegistries;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 
@@ -34,7 +34,12 @@ public final class ClokkworkNpcReloadListeners {
 			FactionDefinition::id,
 			FactionDataFiles::replaceAll,
 			"faction",
-			FactionWorldSync::refreshLoadedWorlds
+			() -> {
+				var server = Services.SERVER.getCurrentServer();
+				if (server != null) {
+					FactionWorldSync.refreshLoadedWorlds(server);
+				}
+			}
 	);
 
 	private ClokkworkNpcReloadListeners() {

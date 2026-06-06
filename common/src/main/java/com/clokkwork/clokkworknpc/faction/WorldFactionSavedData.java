@@ -1,4 +1,4 @@
-package com.clokkwork.clokkworknpc.neoforge.faction;
+package com.clokkwork.clokkworknpc.faction;
 
 import com.clokkwork.clokkworknpc.Constants;
 import com.clokkwork.clokkworknpc.data.faction.FactionDataFiles;
@@ -73,12 +73,13 @@ public final class WorldFactionSavedData extends SavedData {
 
 	public FactionRegistry registry() {
 		ensureInitialized();
+		registry.syncDataFileFactions(FactionDataFiles.current());
 		return registry;
 	}
 
-	public void refreshDataFileFactions() {
+	public void syncDataFileFactions() {
 		ensureInitialized();
-		registry.applyDataFileFactions(FactionDataFiles.current());
+		registry.syncDataFileFactions(FactionDataFiles.current());
 	}
 
 	@Override

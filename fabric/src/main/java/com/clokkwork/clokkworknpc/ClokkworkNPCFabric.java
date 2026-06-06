@@ -14,5 +14,6 @@ public class ClokkworkNPCFabric implements ModInitializer {
         // Use Fabric to bootstrap the Common mod.
         Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
+        com.clokkwork.clokkworknpc.fabric.FabricModEvents.register();
     }
 }

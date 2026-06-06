@@ -2,6 +2,7 @@ package com.clokkwork.clokkworknpc.platform;
 
 import com.clokkwork.clokkworknpc.Constants;
 import com.clokkwork.clokkworknpc.platform.services.IPlatformHelper;
+import com.clokkwork.clokkworknpc.platform.services.ServerAccess;
 
 import java.util.ServiceLoader;
 
@@ -14,6 +15,7 @@ public class Services {
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the modloader if another
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+    public static final ServerAccess SERVER = load(ServerAccess.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.
@@ -21,7 +23,7 @@ public class Services {
     // example our file on Forge points to ForgePlatformHelper while Fabric points to FabricPlatformHelper.
     public static <T> T load(Class<T> clazz) {
 
-        final T loadedService = ServiceLoader.load(clazz)
+        final T loadedService = ServiceLoader.load(clazz, Thread.currentThread().getContextClassLoader())
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
         Constants.LOG.debug("Loaded {} for service {}", loadedService, clazz);

@@ -22,6 +22,9 @@ When using this template the majority of your mod should be developed in the `co
 
 Loader specific projects such as the `fabric` and `neoforge` project are used to load the `common` project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all the code in the `common` project. It is important to remember that the `common` project can not access code from loader specific projects.
 
+### Clokkwork NPCs loader parity
+This mod targets **NeoForge and Fabric with feature parity**. New gameplay systems should land in `common` when they only need Minecraft/vanilla APIs. Loader modules should contain thin registration and platform-service wiring only. If one loader temporarily lacks a feature, document the gap and plan to close it.
+
 ## Removing Platforms and Loaders
 While this template has support for many modloaders, new loaders may appear in the future, and existing loaders may become less relevant.
 

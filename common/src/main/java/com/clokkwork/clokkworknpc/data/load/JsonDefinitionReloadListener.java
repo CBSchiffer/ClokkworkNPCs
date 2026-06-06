@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Loads JSON definition files from {@code data/<namespace>/<directory>/} into a registry.
+ * Loads JSON definition files from {@code data/<namespace>/<directory>/*.json} into a registry.
  */
 public final class JsonDefinitionReloadListener<T> extends SimpleJsonResourceReloadListener {
 
