@@ -6,12 +6,18 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
+/**
+ * Data-driven NPC template. The {@code factions} JSON field is {@link #initialFactions()} only:
+ * starting membership when an NPC is first spawned from this definition, not live membership.
+ *
+ * @see com.clokkwork.clokkworknpc.faction.FactionMembership
+ */
 public record NpcDefinition(
 		ResourceLocation id,
 		String displayName,
 		NpcModelDefinition model,
 		ResourceLocation dialogue,
-		List<ResourceLocation> factions,
+		List<ResourceLocation> initialFactions,
 		List<String> tags
 ) {
 
@@ -20,7 +26,7 @@ public record NpcDefinition(
 			Codec.STRING.fieldOf("display_name").forGetter(NpcDefinition::displayName),
 			NpcModelDefinition.CODEC.fieldOf("model").forGetter(NpcDefinition::model),
 			ResourceLocation.CODEC.fieldOf("dialogue").forGetter(NpcDefinition::dialogue),
-			ResourceLocation.CODEC.listOf().fieldOf("factions").forGetter(NpcDefinition::factions),
+			ResourceLocation.CODEC.listOf().fieldOf("factions").forGetter(NpcDefinition::initialFactions),
 			Codec.STRING.listOf().fieldOf("tags").forGetter(NpcDefinition::tags)
 	).apply(instance, NpcDefinition::new));
 }

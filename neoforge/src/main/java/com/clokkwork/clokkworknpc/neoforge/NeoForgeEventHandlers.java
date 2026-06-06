@@ -16,5 +16,6 @@ public final class NeoForgeEventHandlers {
 	public static void onAddReloadListeners(AddReloadListenerEvent event) {
 		event.addListener(ClokkworkNpcReloadListeners.NPC_DEFINITIONS);
 		event.addListener(ClokkworkNpcReloadListeners.DIALOGUES);
+		event.addListener(ClokkworkNpcReloadListeners.FACTIONS);
 	}
 }

@@ -26,6 +26,7 @@ public final class JsonDefinitionReloadListener<T> extends SimpleJsonResourceRel
 	private final Function<T, ResourceLocation> idGetter;
 	private final Consumer<Map<ResourceLocation, T>> registryUpdater;
 	private final String typeName;
+	private final Runnable afterApply;
 
 	public JsonDefinitionReloadListener(
 			String directory,
@@ -34,11 +35,23 @@ public final class JsonDefinitionReloadListener<T> extends SimpleJsonResourceRel
 			Consumer<Map<ResourceLocation, T>> registryUpdater,
 			String typeName
 	) {
+		this(directory, codec, idGetter, registryUpdater, typeName, null);
+	}
+
+	public JsonDefinitionReloadListener(
+			String directory,
+			Codec<T> codec,
+			Function<T, ResourceLocation> idGetter,
+			Consumer<Map<ResourceLocation, T>> registryUpdater,
+			String typeName,
+			Runnable afterApply
+	) {
 		super(GSON, directory);
 		this.codec = codec;
 		this.idGetter = idGetter;
 		this.registryUpdater = registryUpdater;
 		this.typeName = typeName;
+		this.afterApply = afterApply;
 	}
 
 	@Override
@@ -65,5 +78,8 @@ public final class JsonDefinitionReloadListener<T> extends SimpleJsonResourceRel
 
 		registryUpdater.accept(Map.copyOf(loaded));
 		Constants.LOG.info("Loaded {} {} definition(s)", loaded.size(), typeName);
+		if (afterApply != null) {
+			afterApply.run();
+		}
 	}
 }

@@ -7,6 +7,7 @@ public final class DefinitionPaths {
 
 	public static final String NPCS = "clokkworknpc/npcs";
 	public static final String DIALOGUE = "clokkworknpc/dialogue";
+	public static final String FACTIONS = "clokkworknpc/factions";
 
 	private DefinitionPaths() {
 	}
