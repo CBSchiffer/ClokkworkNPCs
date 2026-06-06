@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
             "com.clokkwork.clokkworknpc.ClokkworkNPCFabric"
+        ],
+        "client": [
+            "com.clokkwork.clokkworknpc.fabric.client.ClokkworkNPCFabricClient"
         ]
     },
     "mixins": [

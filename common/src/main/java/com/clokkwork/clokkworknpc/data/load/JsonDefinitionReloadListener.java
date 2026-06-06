@@ -17,6 +17,10 @@ import java.util.function.Function;
 
 /**
  * Loads JSON definition files from {@code data/<namespace>/<directory>/*.json} into a registry.
+ * <p>
+ * The {@code id} field in each file must match its resource path:
+ * {@code data/clokkworknpc/npcs/understudy.json} requires {@code "id": "clokkworknpc:understudy"}.
+ * Mismatched files are skipped with an error log.
  */
 public final class JsonDefinitionReloadListener<T> extends SimpleJsonResourceReloadListener {
 
@@ -63,12 +67,13 @@ public final class JsonDefinitionReloadListener<T> extends SimpleJsonResourceRel
 			DefinitionCodecUtil.parse(fileId, codec, entry.getValue()).ifPresent(definition -> {
 				ResourceLocation definitionId = idGetter.apply(definition);
 				if (!definitionId.equals(fileId)) {
-					Constants.LOG.warn(
-							"{} file {} declares id {}; using declared id for registry",
+					Constants.LOG.error(
+							"{} file {} must declare id {}; skipping",
 							typeName,
 							fileId,
-							definitionId
+							fileId
 					);
+					return;
 				}
 				if (loaded.put(definitionId, definition) != null) {
 					Constants.LOG.error("Duplicate {} id {} while loading {}", typeName, definitionId, fileId);
