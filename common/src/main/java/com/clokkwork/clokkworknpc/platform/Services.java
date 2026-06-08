@@ -1,6 +1,7 @@
 package com.clokkwork.clokkworknpc.platform;
 
 import com.clokkwork.clokkworknpc.Constants;
+import com.clokkwork.clokkworknpc.platform.services.DialogueNetworking;
 import com.clokkwork.clokkworknpc.platform.services.IPlatformHelper;
 import com.clokkwork.clokkworknpc.platform.services.ServerAccess;
 
@@ -16,6 +17,7 @@ public class Services {
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
     public static final ServerAccess SERVER = load(ServerAccess.class);
+    public static final DialogueNetworking DIALOGUE_NETWORKING = load(DialogueNetworking.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

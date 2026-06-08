@@ -6,9 +6,12 @@ import com.clokkwork.clokkworknpc.command.FactionCommands;
 import com.clokkwork.clokkworknpc.data.load.ClokkworkNpcReloadListeners;
 import com.clokkwork.clokkworknpc.fabric.data.PreparableReloadListenerBridge;
 import com.clokkwork.clokkworknpc.faction.FactionWorldSync;
+import com.clokkwork.clokkworknpc.npc.DialogueSessionManager;
 import com.clokkwork.clokkworknpc.platform.FabricServerAccess;
+import com.clokkwork.clokkworknpc.platform.Services;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -19,6 +22,8 @@ public final class FabricModEvents {
 	}
 
 	public static void register() {
+		Services.DIALOGUE_NETWORKING.register();
+
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			FactionCommands.register(dispatcher);
 			ClokkworkNpcCommands.register(dispatcher);
@@ -48,5 +53,6 @@ public final class FabricModEvents {
 			FactionWorldSync.refreshLoadedWorlds(server);
 		});
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> FabricServerAccess.setCurrentServer(null));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> DialogueSessionManager.endSession(handler.player));
 	}
 }
