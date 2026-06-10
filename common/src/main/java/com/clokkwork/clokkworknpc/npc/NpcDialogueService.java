@@ -76,7 +76,7 @@ public final class NpcDialogueService {
 		);
 		Services.DIALOGUE_NETWORKING.sendDialogueSync(
 				player,
-				DialoguePayloadBuilder.buildSyncPayload(session, host, definition, dialogue, startNode)
+				DialoguePayloadBuilder.buildSyncPayload(session, player, host, definition, dialogue, startNode)
 		);
 		return InteractionResult.sidedSuccess(player.level().isClientSide());
 	}

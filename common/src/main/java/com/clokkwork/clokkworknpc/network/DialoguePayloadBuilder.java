@@ -6,6 +6,7 @@ import com.clokkwork.clokkworknpc.data.npc.NpcDefinition;
 import com.clokkwork.clokkworknpc.npc.DialogueSession;
 import com.clokkwork.clokkworknpc.npc.DialogueTextResolver;
 import com.clokkwork.clokkworknpc.npc.INpcHost;
+import com.clokkwork.clokkworknpc.npc.NpcInteractionContext;
 import com.clokkwork.clokkworknpc.network.payload.DialogueSyncPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -17,18 +18,20 @@ public final class DialoguePayloadBuilder {
 
 	public static DialogueSyncPayload buildSyncPayload(
 			DialogueSession session,
+			ServerPlayer player,
 			INpcHost host,
 			NpcDefinition definition,
 			DialogueDefinition dialogue,
 			DialogueNode node
 	) {
+		var context = NpcInteractionContext.create(player, host, definition);
 		return new DialogueSyncPayload(
 				session.npcEntityId(),
 				DialogueTextResolver.resolveNpcName(host, definition),
 				session.dialogueId(),
 				session.currentNodeId(),
 				DialogueTextResolver.resolveNodeText(node, host.asLivingEntity().getRandom()),
-				DialogueTextResolver.resolveOptions(node)
+				DialogueTextResolver.resolveVisibleOptions(node, context)
 		);
 	}
 

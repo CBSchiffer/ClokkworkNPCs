@@ -10,6 +10,54 @@
           "next": "ask_book"
         },
         {
+          "label": "Offer tribute",
+          "outcomes": [
+            {
+              "if": [
+                {
+                  "type": "clokkworknpc:faction_reputation",
+                  "faction": "clokkworknpc:forbidden_archivists",
+                  "comparison": "greater_than_or_equal",
+                  "value": 25
+                }
+              ],
+              "effects": [
+                {
+                  "type": "clokkworknpc:reputation",
+                  "operation": "add",
+                  "faction": "clokkworknpc:forbidden_archivists",
+                  "value": 5
+                }
+              ],
+              "next": "tribute_accepted"
+            },
+            {
+              "default": true,
+              "effects": [
+                {
+                  "type": "clokkworknpc:reputation",
+                  "operation": "add",
+                  "faction": "clokkworknpc:forbidden_archivists",
+                  "value": -5
+                }
+              ],
+              "next": "tribute_rejected"
+            }
+          ]
+        },
+        {
+          "label": "Command",
+          "visible_if": [
+            {
+              "type": "clokkworknpc:faction_reputation",
+              "faction": "clokkworknpc:forbidden_archivists",
+              "comparison": "greater_than_or_equal",
+              "value": 50
+            }
+          ],
+          "next": "command_menu"
+        },
+        {
           "label": "Leave",
           "action": "close"
         }
@@ -20,6 +68,33 @@
       "options": [
         {
           "label": "Leave",
+          "action": "close"
+        }
+      ]
+    },
+    "tribute_accepted": {
+      "text": "Wise. The archive remembers those who contribute.",
+      "options": [
+        {
+          "label": "Leave",
+          "action": "close"
+        }
+      ]
+    },
+    "tribute_rejected": {
+      "text": "You have nothing we want, and less standing than you think.",
+      "options": [
+        {
+          "label": "Leave",
+          "action": "close"
+        }
+      ]
+    },
+    "command_menu": {
+      "text": "Speak quickly. My patience is borrowed from the catalog.",
+      "options": [
+        {
+          "label": "Dismiss",
           "action": "close"
         }
       ]

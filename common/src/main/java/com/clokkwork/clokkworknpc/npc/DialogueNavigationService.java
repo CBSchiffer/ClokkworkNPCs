@@ -1,10 +1,13 @@
 package com.clokkwork.clokkworknpc.npc;
 
 import com.clokkwork.clokkworknpc.Constants;
+import com.clokkwork.clokkworknpc.condition.NpcConditionContext;
 import com.clokkwork.clokkworknpc.data.dialogue.DialogueDefinition;
 import com.clokkwork.clokkworknpc.data.dialogue.DialogueNode;
 import com.clokkwork.clokkworknpc.data.dialogue.DialogueOption;
 import com.clokkwork.clokkworknpc.data.npc.NpcDefinition;
+import com.clokkwork.clokkworknpc.effect.NpcEffectContext;
+import com.clokkwork.clokkworknpc.effect.NpcEffectExecutor;
 import com.clokkwork.clokkworknpc.network.DialoguePayloadBuilder;
 import com.clokkwork.clokkworknpc.network.payload.ChooseDialogueOptionPayload;
 import com.clokkwork.clokkworknpc.platform.Services;
@@ -54,21 +57,60 @@ public final class DialogueNavigationService {
 			return;
 		}
 
-		DialogueOption selected = options.get(payload.optionIndex());
-		if (selected.action().map("close"::equalsIgnoreCase).orElse(false)) {
+		INpcHost host = DialoguePayloadBuilder.findSessionHost(player, session);
+		if (host == null) {
+			player.sendSystemMessage(Component.literal("That NPC is no longer available."));
 			closeDialogue(player);
 			return;
 		}
 
-		if (selected.next().isPresent()) {
-			advanceToNode(player, session, dialogue, selected.next().get());
+		var definitionId = host.getNpcDefinitionId();
+		if (definitionId.isEmpty()) {
+			closeDialogue(player);
 			return;
 		}
 
-		if (selected.action().isPresent()) {
+		var definitionOptional = ClokkworkNpcRegistries.NPC_DEFINITIONS.get(definitionId.get());
+		if (definitionOptional.isEmpty()) {
+			closeDialogue(player);
+			return;
+		}
+
+		NpcDefinition definition = definitionOptional.get();
+		NpcConditionContext context = NpcInteractionContext.create(player, host, definition);
+		DialogueOption selected = options.get(payload.optionIndex());
+
+		if (!DialogueTextResolver.isOptionVisible(selected, context)) {
+			player.sendSystemMessage(Component.literal("That dialogue option is no longer available."));
+			closeDialogue(player);
+			return;
+		}
+
+		ResolvedDialogueChoice resolved = DialogueOutcomeResolver.resolve(selected, context);
+		NpcEffectExecutor.executeAll(resolved.effects(), new NpcEffectContext(context));
+		applyNavigation(player, session, dialogue, resolved);
+	}
+
+	private static void applyNavigation(
+			ServerPlayer player,
+			DialogueSession session,
+			DialogueDefinition dialogue,
+			ResolvedDialogueChoice resolved
+	) {
+		if (resolved.action().map("close"::equalsIgnoreCase).orElse(false)) {
+			closeDialogue(player);
+			return;
+		}
+
+		if (resolved.next().isPresent()) {
+			advanceToNode(player, session, dialogue, resolved.next().get());
+			return;
+		}
+
+		if (resolved.action().isPresent()) {
 			Constants.LOG.info(
 					"Unsupported dialogue option action '{}' for player {}; closing session",
-					selected.action().get(),
+					resolved.action().get(),
 					player.getGameProfile().getName()
 			);
 		}
@@ -113,7 +155,7 @@ public final class DialogueNavigationService {
 		DialogueSession updatedSession = DialogueSessionManager.getSession(player).orElseThrow();
 		Services.DIALOGUE_NETWORKING.sendDialogueSync(
 				player,
-				DialoguePayloadBuilder.buildSyncPayload(updatedSession, host, definition, dialogue, nextNode)
+				DialoguePayloadBuilder.buildSyncPayload(updatedSession, player, host, definition, dialogue, nextNode)
 		);
 	}
 
